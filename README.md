@@ -18,9 +18,10 @@ With this mod, your ship's operator must now carefully consider when to use tele
 Currently not planning to add charges for the inverse teleporter. Could change if people show interest.
 
 ## Changelog
+### v1.0.2
+* Fixed a bug that would sometimes cause players to crash on joining the lobby
 ### v1.0.1
 * Removed "." from tooltip
 * Added github repo
-
 ### v1.0.0 
 * Release
