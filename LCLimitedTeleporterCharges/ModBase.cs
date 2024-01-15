@@ -5,7 +5,6 @@ using LCLimitedTeleporterCharges.Patches;
 using System;
 using LC_API.Networking;
 using LC_API.GameInterfaceAPI.Events.EventArgs.Player;
-using System.Runtime.InteropServices;
 
 namespace LCLimitedTeleporterCharges
 {
@@ -14,7 +13,7 @@ namespace LCLimitedTeleporterCharges
     {
         private const string modGUID = "Tesert.LCLimitedTeleporterCharges";
         private const string modName = "Limited Teleporter Charges";
-        private const string modVersion = "1.0.0";
+        private const string modVersion = "1.0.2";
             
         private readonly Harmony harmony = new Harmony(modGUID);
 
@@ -89,11 +88,11 @@ namespace LCLimitedTeleporterCharges
         }
 
         [NetworkMessage("hostSharingTeleporterMaximumChargesMsg")]
-        static void HostSharingTeleporterMaximumChargesHandler(ulong sender, string message)
+        static void HostSharingTeleporterMaximumChargesHandler(ulong sender, Wrapper<string> message)
         {
             if (!LC_API.GameInterfaceAPI.Features.Player.LocalPlayer.IsHost)
             {
-                string[] stringArray = message.Split(',');
+                string[] stringArray = message.Value.Split(',');
                 Instance.mls.LogInfo("Client received max teleporter charges + [" + stringArray[0] + "] and current teleporter charges + [" + stringArray[1] + "] from host, updating charges to sync with host.");
                 teleportMaxCharges = Int32.Parse(stringArray[0]);
                 TeleporterCharges = Int32.Parse(stringArray[1]);
@@ -108,12 +107,16 @@ namespace LCLimitedTeleporterCharges
 
         void PlayerJoined(JoinedEventArgs e)
         {
-            LC_API.GameInterfaceAPI.Features.Player player = e.Player;
             if (isHost())
             {
                 Instance.mls.LogInfo("A player joined, sharing teleporter charges data with them.");
-                Network.Broadcast("hostSharingTeleporterMaximumChargesMsg", teleportMaxCharges.ToString() + "," + TeleporterCharges.ToString());
+                Network.Broadcast("hostSharingTeleporterMaximumChargesMsg", new Wrapper<string>(){Value = teleportMaxCharges.ToString() + "," + TeleporterCharges.ToString()});
             }
+        }
+
+        public class Wrapper<T>
+        {
+            public T Value { get; set; }
         }
     }
 }
