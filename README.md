@@ -1,4 +1,4 @@
-# Limited Teleporter Charges
+# [Limited Teleporter Charges](https://thunderstore.io/c/lethal-company/p/Tesert/LimitedTeleporterCharges/)
 #### Introduces a finite number of charges for the teleporter, in contrast to vanilla where the teleporter has unlimited charges.
 
 ## Features
